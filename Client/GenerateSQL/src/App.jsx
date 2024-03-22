@@ -4,27 +4,44 @@ import sqlLogo from './assets/sql-Logo.png';
 import { useState } from 'react';
 
 function App() {
-  const[queryDescription,setQueryDescription]=useState(""); 
+  const [userPrompt, setUserPrompt] = useState("");
+  const[sqlQuery,setSqlQuery]=useState("");
 
-  const submitForm = (e) =>{
+  const submitForm = async (e) =>{
     e.preventDefault();
-    console.log("form submitted",queryDescription)
+    
+    const generatedQuery = await generateQuery();
+    setSqlQuery(generatedQuery);
   }
+
+  const generateQuery = async () => {
+    const response = await fetch("http://localhost:3005/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ queryDescription: userPrompt }),
+    });
+
+    const data = await response.json();
+    return data.sqlQuery.trim();
+  };
 
   return (
     <>
       <main className={Style.main}>
         <img src={sqlLogo} alt='' className={Style.img} />
         <h3> Generate SQL with AI</h3>
-
         <form onSubmit={submitForm}>
           <input
           type="text"
           name='query-description'
           placeholder='Describe your query'
-          onChange={(e) => setQueryDescription(e.target.value)}
+          value={userPrompt}
+          onChange={(e) => setUserPrompt(e.target.value)}
           />
           <input type="submit" value="Generate query" />
+          <pre>{sqlQuery}</pre>
         </form>
       </main>
     </>
