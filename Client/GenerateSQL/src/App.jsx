@@ -30,7 +30,7 @@ function App() {
   return (
     <>
       <main className={Style.main}>
-        <img src={sqlLogo} alt='' className={Style.img} />
+        <img src={sqlLogo} alt='' className={Style.img} height="10%" width="10%" />
         <h3> Generate SQL with AI</h3>
         <form onSubmit={submitForm}>
           <input

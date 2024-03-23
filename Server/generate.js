@@ -19,7 +19,7 @@ const generate = async (queryDescription) => {
       { role: "assistant", content: "SELECT * FROM users;" },
       { role: "user", content: `Convert the following natural language description into a SQL query:\n\n${queryDescription}.` },
     ];
-    const response = await openaiClient.createChatCompletion({
+    const response = await openaiClient.completions.create({
       model: "gpt-3.5-turbo",
       messages: message,
     });
